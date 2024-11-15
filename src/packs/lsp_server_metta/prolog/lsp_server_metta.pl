@@ -138,6 +138,9 @@ stdio_handler(Extra-ExtraTail, In, Out) :-
     wait_for_input([In], _, infinite),
     fill_buffer(In),
     read_pending_codes(In, ReadCodes, Tail),
+    debug_lsp(main, "ReadCodes = ~w", [ReadCodes]),
+    string_codes(Str, ReadCodes),
+    debug_lsp(main, "Str = ~w", [Str]),
     ( Tail == []
     -> true
     ; ( ExtraTail = ReadCodes,
