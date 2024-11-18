@@ -134,13 +134,17 @@ stdio_handler(In, Out):-
    catch(stdio_handler(A-A, In, Out),_,fail),
    fail.
 
+string_codes_safe(Str, ReadCodes):-
+    copy_term(ReadCodes,ReadCodesCopy), % we need to destructively modify
+    append(_,[],ReadCodesCopy),  % ground the tail end of the list
+    string_codes(Str, ReadCodesCopy). % now is a proper list
+
 stdio_handler(Extra-ExtraTail, In, Out) :-
     wait_for_input([In], _, infinite),
     fill_buffer(In),
     read_pending_codes(In, ReadCodes, Tail),
-    debug_lsp(main, "ReadCodes = ~w", [ReadCodes]),
-    string_codes(Str, ReadCodes),
-    debug_lsp(main, "Str = ~w", [Str]),
+    string_codes_safe(ReadCodesStr, ReadCodes),
+    debug_lsp(main, "ReadCodesStr = ~w", [Str]),
     ( Tail == []
     -> true
     ; ( ExtraTail = ReadCodes,
