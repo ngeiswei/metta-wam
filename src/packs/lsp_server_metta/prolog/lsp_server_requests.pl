@@ -338,6 +338,9 @@ sample_ws_edit :-
     apply_workspace_edit(Label, Edit, Response),
     format('Workspace edit response: ~w', [Response]).
 
+fetch_workspace_configuration :-
+    !.
+
 % Sample predicate for 'fetch_workspace_configuration/2'
 fetch_workspace_configuration :-
     ConfigurationItems = [
